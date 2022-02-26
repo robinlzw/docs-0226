@@ -1,0 +1,71 @@
+#include <iostream>
+ 
+using namespace std;
+ 
+class X
+{
+public:
+	int m_i;
+	X(const X& tmpx)
+	{
+		m_i = tmpx.m_i;
+		cout << "X类的拷贝构造函数被调用" << endl;
+	}
+	X()
+	{
+		m_i = 0;
+		cout << "X类的构造函数被调用" << endl;
+	}
+	~X()
+	{
+		cout << "X类的析构函数被调用" << endl;
+	}
+ 
+};
+ 
+void func(X tmpx)
+{
+	return;
+}
+ 
+int main()
+{
+	{
+		{
+			// 代码段 1
+			X x0;
+			// 将实参传递给形参时调用了 X 类的拷贝构造函数
+			// 编译器在 func 函数空间内构造了 tmpx 对象并在 func 函数返回之前将 tmpx 对象析构掉
+			func(x0);
+		}
+ 
+		{ 
+			// 代码段 2
+			// 代码段 1 与 代码段 2 的执行结果一样
+			X x0;
+			X tmpx = x0;
+		}
+ 
+		// 老编译器视角
+		// 相当于把 func 函数的参数率先在调用 func 函数之前便构造出来，然后传递到 func 函数中
+		// X tmpobj;  			// 编译器产生出来一个临时对象
+		// tmpobj.X::X(x0); 	// 调用拷贝构造函数
+		// func(tmpobj); 		// 用临时对象调用 func
+		// tmpobj.X::~X(); 		// func() 被调用完成后，析构函数被调用
+ 
+		// 老编译器视角
+		// void func(X &tmpx)
+		// {
+		// 	return;
+		// }
+	}
+	return 0;
+ 
+}
+/**
+ * 结果
+ * X类的构造函数被调用
+ * X类的拷贝构造函数被调用
+ * X类的析构函数被调用
+ * X类的析构函数被调用
+ */

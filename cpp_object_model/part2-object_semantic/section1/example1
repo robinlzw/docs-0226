@@ -1,0 +1,21 @@
+#include <iostream>
+class A
+{
+    public:
+};
+ 
+int main()
+{
+    A a;
+    // sizeof() : 返回一个对象所占用的字节数
+    int ilen = sizeof(a);           // 等价于 sizeof(A), 结果为 1
+    printf("ilen = %d\n", ilen);    // ilen = 1
+}
+/**
+ * 结果解释
+ * A a; &a 代表对象 a 的首地址
+ * 内存中的一个地址单元中保存的是 1 个字节的内容
+ * 
+ * 即使是一个空类对象，由于该对象在内存中存在起始地址，
+ * 并且该地址属于该对象，因此该对象至少有一个字节
+ */

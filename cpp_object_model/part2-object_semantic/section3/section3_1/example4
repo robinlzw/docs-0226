@@ -1,0 +1,61 @@
+#include <iostream>
+ 
+using namespace std;
+ 
+class X
+{
+public:
+	int m_i;
+	X(const X& tmpx)
+	{
+		m_i = tmpx.m_i;
+		cout << "X类的拷贝构造函数被调用" << endl;
+	}
+	X()
+	{
+		m_i = 0;
+		cout << "X类的构造函数被调用" << endl;
+	}
+	~X()
+	{
+		cout << "X类的析构函数被调用" << endl;
+	}
+public:
+	void functest()
+	{
+		cout << "functest()成员函数被调用" << endl;
+	}
+ 
+};
+ 
+X func()
+{
+	X x0;
+	//......
+	// 由于 return x0 产生临时对象，该临时对象直接构造到了 my 中
+	return x0;
+}
+ 
+int main()
+{
+	{
+		func().functest();
+	}
+ 
+	{
+		// 编译器视角
+		// X my;
+		// (func(my), my).functest(); // 逗号表达式，先求解表达式1，再求解表达式2，整个表达式的值是表达式2 的值
+	}
+	// 编译器视角 func 函数
+	// void func(X& extra)  	//1：安插一个引用参数
+	// {
+	// 	X x0;  					//这个之所以能调用构造函数，是因为编译器内部有诸如 x0.X::X() 这种代码
+	// 	//..
+	// 	extra.X::X(x0);  		//2：return之前安插一个对拷贝构造函数的调用
+	// 	//return x0;
+	// 	return;
+	// }
+	return 0;
+ 
+}

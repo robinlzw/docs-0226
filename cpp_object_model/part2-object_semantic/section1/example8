@@ -1,0 +1,23 @@
+#include <iostream>
+ 
+using namespace std;
+class A
+{
+	virtual void myfunc3() {};
+	virtual void myfunc4() {};	
+};
+ 
+int main()
+{
+    A a;
+    // sizeof() : 返回一个对象所占用的字节数
+    int ilen = sizeof(a);           // 等价于 sizeof(A), 结果为 4
+    printf("ilen = %d\n", ilen);    // ilen = 4
+}
+/**
+ * 结果解释
+ * 若类中存在一个/多个虚函数，该对象占用 4 个字节
+ * 1. 每个虚函数都有一个指向其的指针，这些指针保存在虚函数表中
+ * 2. 虚函数表一般保存在最后生成的可执行文件中，在程序执行时载入内存
+ * 3. 4 字节的增加即为虚函数表指针(virtual table pointer, vptr)
+ */

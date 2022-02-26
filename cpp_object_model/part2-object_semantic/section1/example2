@@ -1,0 +1,20 @@
+#include <iostream>
+class A
+{
+    public:
+    	void func() {};
+	    void func1() {};
+	    void func2() {};
+};
+ 
+int main()
+{
+    A a;
+    // sizeof() : 返回一个对象所占用的字节数
+    int ilen = sizeof(a);           // 等价于 sizeof(A), 结果为 1
+    printf("ilen = %d\n", ilen);    // ilen = 1
+}
+/**
+ * 结果解释
+ * 类中的成员函数不占用类对象内存空间
+ */

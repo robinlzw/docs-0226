@@ -1,0 +1,59 @@
+#include <iostream>
+ 
+using namespace std;
+ 
+class CTempValue
+{
+public:
+	int val1;
+	int val2;
+public:
+	CTempValue(int v1 = 0, int v2 = 0) : val1(v1), val2(v2) //构造函数
+	{
+		cout << "调用了CTempValue类的构造函数!" << endl;
+		cout << "val1 = " << val1 << endl;
+		cout << "val2 = " << val2 << endl;
+	}
+	CTempValue(const  CTempValue& t) : val1(t.val1), val2(t.val2) //拷贝构造函数
+	{
+		cout << "调用了CTempValue类的拷贝构造函数!" << endl;
+	};
+	virtual ~CTempValue() //析构函数
+	{
+		cout << "调用了CTempValue类的析构函数!" << endl;
+	};
+};
+ 
+CTempValue Double(CTempValue& ts) 	//第一个版本
+{
+	CTempValue tmpm; 				//这里会消耗一个构造和一个析构函数的调用
+	tmpm.val1 = ts.val1 * 2;
+	tmpm.val2 = ts.val2 * 2;
+	return tmpm;  					//生成了临时对象，调用了拷贝构造函数和析构函数
+}
+ 
+int main()
+{
+	{
+		CTempValue ts1(10, 20);	
+		// 由于 Double 函数返回的临时对象没有接受者，该临时对象会在 Double 函数调用后被立即释放
+		Double(ts1);
+		// // 此时 Double 函数返回的临时对象直接构造到 ts2 中，并且直到 ts2 作用域结束后才会析构该临时对象
+		// CTempValue ts2 = Double(ts1);
+	}
+	return 0;
+ 
+}
+/**
+ * 结果
+ * 调用了CTempValue类的构造函数!
+ * val1 = 10
+ * val2 = 20
+ * 调用了CTempValue类的构造函数!
+ * val1 = 0
+ * val2 = 0
+ * 调用了CTempValue类的拷贝构造函数!
+ * 调用了CTempValue类的析构函数!
+ * 调用了CTempValue类的析构函数!
+ * 调用了CTempValue类的析构函数!
+ */

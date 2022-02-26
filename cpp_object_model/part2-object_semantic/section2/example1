@@ -1,0 +1,58 @@
+#include <iostream>
+ 
+using namespace std;
+ 
+class A
+{
+public:
+	int a;
+	A()
+	{
+		printf("A::A() 的 this指针是：%p!\n", this);
+	}
+	void funA() { printf("A::funcA: this = %p\n", this); }
+ 
+};
+ 
+class B
+{
+public:
+	int b;
+	B()
+	{
+		printf("B::B() 的 this指针是：%p!\n", this);
+	}
+	void funB() { printf("B::funcB: this = %p\n", this); }
+ 
+};
+ 
+class C : public A, public B    // 继承的顺序很重要
+{
+public:
+	int c;
+	C()
+	{
+		printf("C::C() 的 this指针是：%p!\n", this);
+	}
+	void funC() { printf("C::funcC: this = %p\n", this); }
+};
+ 
+ 
+int main()
+{
+	cout << sizeof(A) << endl;  // 4    // A 类 int a 成员占 4 字节
+	cout << sizeof(B) << endl;  // 4    // B 类 int b 成员占 4 字节
+	cout << sizeof(C) << endl;  // 12   // C 类 int A::a(4 字节) + int B::b(4 字节) + int c(4 字节) = 12 字节
+    /**
+     * A::A() 的 this指针是：009FFD68
+     * B::B() 的 this指针是：009FFD6C
+     * C::C() 的 this指针是：009FFD68
+     */
+	C myc;          // C 类继承 A 类，B 类因此 C 类的构造函数会调用 A 类 B 类的构造函数
+	myc.funA();     // A::funcA: this = 009FFD68 (A 类子对象空间)
+	myc.funB();     // B::funcB: this = 009FFD6C (B 类子对象空间，编译器内部自动调整 this 指针)
+	myc.funC();     // C::funcC: this = 009FFD68 (C 类对象空间，即 A 类对象空间)
+	
+	return 0;
+ 
+}

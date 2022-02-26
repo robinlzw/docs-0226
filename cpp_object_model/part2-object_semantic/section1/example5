@@ -1,0 +1,20 @@
+#include <iostream>
+ 
+using namespace std;
+class A
+{
+	int a = 100;
+};
+ 
+int main()
+{
+    A a;
+    // sizeof() : 返回一个对象所占用的字节数
+    int ilen = sizeof(a);           // 等价于 sizeof(A), 结果为 4
+    printf("ilen = %d\n", ilen);    // ilen = 4
+}
+/**
+ * 结果解释
+ * 非静态的成员变量保存在对象内部
+ * 若在类中定义了非静态成员变量，则 sizeof 该类对象时此类对象占用的内存会因为该成员变量的存在而增长
+ */

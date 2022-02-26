@@ -1,0 +1,20 @@
+#include <iostream>
+ 
+using namespace std;
+class A
+{
+	static int a;
+	static int b;
+};
+ 
+int main()
+{
+    A a;
+    // sizeof() : 返回一个对象所占用的字节数
+    int ilen = sizeof(a);           // 等价于 sizeof(A), 结果为 1
+    printf("ilen = %d\n", ilen);    // ilen = 1
+}
+/**
+ * 结果解释
+ * 静态的成员变量所占用的内存空间和类对象无关
+ */
